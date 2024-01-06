@@ -9,8 +9,8 @@ import (
 	"github.com/Logan9312/Hacked-2024-Backend/src"
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
-	"github.com/stripe/stripe-go"
 	_ "github.com/lib/pq"
+	"github.com/stripe/stripe-go"
 )
 
 func main() {
@@ -25,7 +25,7 @@ func main() {
 
 	src.DB, err = sqlx.Connect("postgres", connStr)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error connecting to db: ", err)
 	}
 	defer src.DB.Close()
 
