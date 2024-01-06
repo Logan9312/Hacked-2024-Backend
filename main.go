@@ -5,14 +5,14 @@ import (
 	"log"
 	"os"
 
-	"github.com/Logan9312/Hacked-2024-Backend/src"
 	"github.com/Logan9312/Hacked-2024-Backend/routers"
+	"github.com/Logan9312/Hacked-2024-Backend/src"
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	"github.com/stripe/stripe-go"
 )
 
-func main() {
+func Main() {
 
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -43,7 +43,6 @@ func main() {
 	}
 	fmt.Printf("version=%s\n", version)
 
-	//go commands.SetRoles(mainSession)
 	fmt.Println("Backend is running!")
 
 	routers.HealthCheck()

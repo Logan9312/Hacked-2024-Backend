@@ -23,7 +23,17 @@ func HealthCheck() {
 		return c.JSON(http.StatusOK, struct{ Status string }{Status: "OK"})
 	})
 
-	e.GET("/products", src.FetchPayments)
+	e.GET("/payments", src.FetchPayments)
+	e.GET("/users", src.FetchUsers)
+	e.GET("/tasks", src.FetchTasks)
+	e.GET("/lists", src.FetchLists)
+	e.GET("/messages", src.FetchMessages)
+
+	e.POST("/save/payment", src.SavePayment)
+	e.POST("/save/user", src.SaveUser)
+	e.POST("/save/tasks", src.SaveTask)
+	e.POST("/save/lists", src.SaveList)
+	e.POST("/save/messages", src.SaveMessage)
 
 	httpPort := os.Getenv("PORT")
 	if httpPort == "" {
