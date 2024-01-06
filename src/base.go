@@ -16,60 +16,55 @@ type HouseHold struct {
 }
 
 type Payment struct {
-	ID          int64     `db:"id" json:"id"`
-	HouseHold   HouseHold `db:"household" json:"household"`
-	Payee       string    `db:"payee" json:"payee"`
-	Name        string    `db:"name" json:"name"`
-	Description string    `db:"description" json:"description"`
-	Price       int64     `db:"price" json:"price"`
+	ID          int64  `db:"id" json:"id"`
+	HouseHoldID int64  `db:"household_id" json:"household_id"`
+	Payee       string `db:"payee" json:"payee"`
+	Name        string `db:"name" json:"name"`
+	Description string `db:"description" json:"description"`
+	Price       int64  `db:"price" json:"price"`
 }
 
 type Task struct {
-	ID          int64     `db:"id" json:"id"`
-	HouseHold   HouseHold `db:"household" json:"household"`
-	Name        string    `db:"name" json:"name"`
-	Description string    `db:"description" json:"description"`
-	DueDate     string    `db:"due_date" json:"due_date"`
-	AssignedTo  User      `db:"assigned_to" json:"assigned_to"`
-	Completed   bool      `db:"completed" json:"completed"`
+	ID           int64  `db:"id" json:"id"`
+	HouseHoldID  int64  `db:"household_id" json:"household_id"`
+	Name         string `db:"name" json:"name"`
+	Description  string `db:"description" json:"description"`
+	DueDate      string `db:"due_date" json:"due_date"`
+	AssignedToID int64  `db:"assigned_to_id" json:"assigned_to_id"`
+	Completed    bool   `db:"completed" json:"completed"`
 }
 
 type List struct {
-	ID          int64     `db:"id" json:"id"`
-	HouseHold   HouseHold `db:"household" json:"household"`
-	Name        string    `db:"name" json:"name"`
-	Description string    `db:"description" json:"description"`
+	ID          int64  `db:"id" json:"id"`
+	HouseHoldID int64  `db:"household_id" json:"household_id"`
+	Name        string `db:"name" json:"name"`
+	Description string `db:"description" json:"description"`
 }
 
 type Message struct {
-	ID        int64     `db:"id" json:"id"`
-	HouseHold HouseHold `db:"household" json:"household"`
-	Content   string    `db:"content" json:"content"`
-	Author    User      `db:"author" json:"author"`
-	Timestamp string    `db:"timestamp" json:"timestamp"`
+	ID          int64  `db:"id" json:"id"`
+	HouseHoldID int64  `db:"household_id" json:"household_id"`
+	Content     string `db:"content" json:"content"`
+	AuthorID    int64  `db:"author_id" json:"author_id"`
+	Timestamp   string `db:"timestamp" json:"timestamp"`
 }
 
-type User struct {
-	ID        int64     `db:"id" json:"id"`
-	HouseHold HouseHold `db:"household" json:"household"`
-	Name      string    `db:"username" json:"username"`
-	Email     string    `db:"email" json:"email"`
+type AppUser struct {
+	ID          int64  `db:"id" json:"id"`
+	HouseHoldID int64  `db:"household_id" json:"household_id"`
+	Username    string `db:"username" json:"username"`
+	Email       string `db:"email" json:"email"`
 }
 
 func FetchPayments(c echo.Context) error {
-
 	if DB == nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Database connection is not established"})
 	}
 
 	var payments []Payment
 	err := DB.Select(&payments, "SELECT * FROM payments")
-
 	if err != nil {
-		// Log the detailed error for internal use
 		log.Printf("Error fetching payments: %v", err)
-
-		// Return a generic error message to the client
 		return c.JSON(http.StatusServiceUnavailable, map[string]string{"error": "Error fetching payments"})
 	}
 
@@ -82,10 +77,9 @@ func SavePayment(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request"})
 	}
 
-	query := "INSERT INTO payments (name, description, price) VALUES (:name, :description, :price)"
+	query := "INSERT INTO payments (household_id, payee, name, description, price) VALUES (:household_id, :payee, :name, :description, :price)"
 	result, err := DB.NamedExec(query, newPayment)
 	if err != nil {
-		// Step 4: Handle any errors
 		log.Printf("Error saving payment: %v", err)
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Error saving payment"})
 	}
@@ -122,7 +116,7 @@ func SaveTask(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request"})
 	}
 
-	query := "INSERT INTO tasks (name, description, due_date, assigned_to, completed) VALUES (:name, :description, :due_date, :assigned_to, :completed)"
+	query := "INSERT INTO tasks (household_id, name, description, due_date, assigned_to_id, completed) VALUES (:household_id, :name, :description, :due_date, :assigned_to_id, :completed)"
 	result, err := DB.NamedExec(query, newTask)
 	if err != nil {
 		log.Printf("Error saving task: %v", err)
@@ -162,7 +156,7 @@ func SaveList(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request"})
 	}
 
-	query := "INSERT INTO lists (name, description) VALUES (:name, :description)"
+	query := "INSERT INTO lists (household_id, name, description) VALUES (:household_id, :name, :description)"
 	result, err := DB.NamedExec(query, newList)
 	if err != nil {
 		log.Printf("Error saving list: %v", err)
@@ -202,7 +196,7 @@ func SaveMessage(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request"})
 	}
 
-	query := "INSERT INTO messages (content, author, timestamp) VALUES (:content, :author, :timestamp)"
+	query := "INSERT INTO messages (household_id, content, author_id, timestamp) VALUES (:household_id, :content, :author_id, :timestamp)"
 	result, err := DB.NamedExec(query, newMessage)
 	if err != nil {
 		log.Printf("Error saving message: %v", err)
@@ -225,7 +219,7 @@ func FetchUsers(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Database connection is not established"})
 	}
 
-	var users []User
+	var users []AppUser
 	err := DB.Select(&users, "SELECT * FROM users")
 	if err != nil {
 		log.Printf("Error fetching users: %v", err)
@@ -237,12 +231,12 @@ func FetchUsers(c echo.Context) error {
 
 // SaveUser saves a new user to the database.
 func SaveUser(c echo.Context) error {
-	var newUser User
+	var newUser AppUser
 	if err := c.Bind(&newUser); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request"})
 	}
 
-	query := "INSERT INTO users (username, email) VALUES (:username, :email)"
+	query := "INSERT INTO app_users (household_id, username, email) VALUES (:household_id, :username, :email)"
 	result, err := DB.NamedExec(query, newUser)
 	if err != nil {
 		log.Printf("Error saving user: %v", err)
