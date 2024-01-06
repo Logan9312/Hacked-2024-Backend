@@ -10,39 +10,50 @@ import (
 
 var DB *sqlx.DB
 
+type HouseHold struct {
+	ID   int64  `db:"id" json:"id"`
+	Name string `db:"name" json:"name"`
+}
+
 type Payment struct {
-	ID          int64  `db:"id" json:"id"`
-	Name        string `db:"name" json:"name"`
-	Description string `db:"description" json:"description"`
-	Price       int64  `db:"price" json:"price"`
+	ID          int64     `db:"id" json:"id"`
+	HouseHold   HouseHold `db:"household" json:"household"`
+	Payee       string    `db:"payee" json:"payee"`
+	Name        string    `db:"name" json:"name"`
+	Description string    `db:"description" json:"description"`
+	Price       int64     `db:"price" json:"price"`
 }
 
 type Task struct {
-	ID          int64  `db:"id" json:"id"`
-	Name        string `db:"name" json:"name"`
-	Description string `db:"description" json:"description"`
-	DueDate     string `db:"due_date" json:"due_date"`
-	AssignedTo  string `db:"assigned_to" json:"assigned_to"`
-	Completed   bool   `db:"completed" json:"completed"`
+	ID          int64     `db:"id" json:"id"`
+	HouseHold   HouseHold `db:"household" json:"household"`
+	Name        string    `db:"name" json:"name"`
+	Description string    `db:"description" json:"description"`
+	DueDate     string    `db:"due_date" json:"due_date"`
+	AssignedTo  User      `db:"assigned_to" json:"assigned_to"`
+	Completed   bool      `db:"completed" json:"completed"`
 }
 
 type List struct {
-	ID          int64  `db:"id" json:"id"`
-	Name        string `db:"name" json:"name"`
-	Description string `db:"description" json:"description"`
+	ID          int64     `db:"id" json:"id"`
+	HouseHold   HouseHold `db:"household" json:"household"`
+	Name        string    `db:"name" json:"name"`
+	Description string    `db:"description" json:"description"`
 }
 
 type Message struct {
-	ID        int64  `db:"id" json:"id"`
-	Content   string `db:"content" json:"content"`
-	Author    string `db:"author" json:"author"`
-	Timestamp string `db:"timestamp" json:"timestamp"`
+	ID        int64     `db:"id" json:"id"`
+	HouseHold HouseHold `db:"household" json:"household"`
+	Content   string    `db:"content" json:"content"`
+	Author    User      `db:"author" json:"author"`
+	Timestamp string    `db:"timestamp" json:"timestamp"`
 }
 
 type User struct {
-	ID    int64  `db:"id" json:"id"`
-	Name  string `db:"username" json:"username"`
-	Email string `db:"email" json:"email"`
+	ID        int64     `db:"id" json:"id"`
+	HouseHold HouseHold `db:"household" json:"household"`
+	Name      string    `db:"username" json:"username"`
+	Email     string    `db:"email" json:"email"`
 }
 
 func FetchPayments(c echo.Context) error {
