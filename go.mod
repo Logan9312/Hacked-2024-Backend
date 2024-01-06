@@ -5,6 +5,7 @@ go 1.21.5
 require (
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/joho/godotenv v1.5.1
+	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/stripe/stripe-go v70.15.0+incompatible
 )
