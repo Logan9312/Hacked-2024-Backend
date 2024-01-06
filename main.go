@@ -10,6 +10,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	"github.com/stripe/stripe-go"
+	_ "github.com/lib/pq"
 )
 
 func main() {
