@@ -17,7 +17,7 @@ type HouseHold struct {
 
 type Payment struct {
 	ID          int64  `db:"id" json:"id"`
-	HouseHoldID int64  `db:"household_id" json:"household_id"`
+	HouseHoldID int64  `db:"household" json:"household"`
 	Payee       string `db:"payee" json:"payee"`
 	Name        string `db:"name" json:"name"`
 	Description string `db:"description" json:"description"`
@@ -26,7 +26,7 @@ type Payment struct {
 
 type Task struct {
 	ID           int64  `db:"id" json:"id"`
-	HouseHoldID  int64  `db:"household_id" json:"household_id"`
+	HouseHoldID  int64  `db:"household" json:"household"`
 	Name         string `db:"name" json:"name"`
 	Description  string `db:"description" json:"description"`
 	DueDate      string `db:"due_date" json:"due_date"`
@@ -36,24 +36,24 @@ type Task struct {
 
 type List struct {
 	ID          int64  `db:"id" json:"id"`
-	HouseHoldID int64  `db:"household_id" json:"household_id"`
+	HouseHoldID int64  `db:"household" json:"household"`
 	Name        string `db:"name" json:"name"`
 	Description string `db:"description" json:"description"`
 }
 
 type Message struct {
 	ID          int64  `db:"id" json:"id"`
-	HouseHoldID int64  `db:"household_id" json:"household_id"`
+	HouseHoldID int64  `db:"household" json:"household"`
 	Content     string `db:"content" json:"content"`
 	AuthorID    int64  `db:"author_id" json:"author_id"`
 	Timestamp   string `db:"timestamp" json:"timestamp"`
 }
 
 type AppUser struct {
-	ID          int64  `db:"id" json:"id"`
-	HouseHoldID int64  `db:"household_id" json:"household_id"`
-	Username    string `db:"username" json:"username"`
-	Email       string `db:"email" json:"email"`
+	ID        int64  `db:"id" json:"id"`
+	HouseHold int64  `db:"household" json:"household"`
+	Username  string `db:"username" json:"username"`
+	Email     string `db:"email" json:"email"`
 }
 
 func FetchPayments(c echo.Context) error {
