@@ -62,7 +62,7 @@ func FetchPayments(c echo.Context) error {
 	}
 
 	var payments []Payment
-	err := DB.Select(&payments, "SELECT * FROM payments")
+	err := DB.Select(&payments, "SELECT * FROM payment")
 	if err != nil {
 		log.Printf("Error fetching payments: %v", err)
 		return c.JSON(http.StatusServiceUnavailable, map[string]string{"error": "Error fetching payments"})
@@ -77,7 +77,7 @@ func SavePayment(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request"})
 	}
 
-	query := "INSERT INTO payments (household_id, payee, name, description, price) VALUES (:household_id, :payee, :name, :description, :price)"
+	query := "INSERT INTO payment (household_id, payee, name, description, price) VALUES (:household_id, :payee, :name, :description, :price)"
 	result, err := DB.NamedExec(query, newPayment)
 	if err != nil {
 		log.Printf("Error saving payment: %v", err)
@@ -102,7 +102,7 @@ func FetchTasks(c echo.Context) error {
 	var tasks []Task
 	err := DB.Select(&tasks, "SELECT * FROM tasks")
 	if err != nil {
-		log.Printf("Error fetching tasks: %v", err)
+		log.Printf("Error fetching task: %v", err)
 		return c.JSON(http.StatusServiceUnavailable, map[string]string{"error": "Error fetching tasks"})
 	}
 
@@ -116,7 +116,7 @@ func SaveTask(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request"})
 	}
 
-	query := "INSERT INTO tasks (household_id, name, description, due_date, assigned_to_id, completed) VALUES (:household_id, :name, :description, :due_date, :assigned_to_id, :completed)"
+	query := "INSERT INTO task (household_id, name, description, due_date, assigned_to_id, completed) VALUES (:household_id, :name, :description, :due_date, :assigned_to_id, :completed)"
 	result, err := DB.NamedExec(query, newTask)
 	if err != nil {
 		log.Printf("Error saving task: %v", err)
@@ -140,7 +140,7 @@ func FetchLists(c echo.Context) error {
 	}
 
 	var lists []List
-	err := DB.Select(&lists, "SELECT * FROM lists")
+	err := DB.Select(&lists, "SELECT * FROM list")
 	if err != nil {
 		log.Printf("Error fetching lists: %v", err)
 		return c.JSON(http.StatusServiceUnavailable, map[string]string{"error": "Error fetching lists"})
@@ -156,7 +156,7 @@ func SaveList(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request"})
 	}
 
-	query := "INSERT INTO lists (household_id, name, description) VALUES (:household_id, :name, :description)"
+	query := "INSERT INTO list (household_id, name, description) VALUES (:household_id, :name, :description)"
 	result, err := DB.NamedExec(query, newList)
 	if err != nil {
 		log.Printf("Error saving list: %v", err)
@@ -180,7 +180,7 @@ func FetchMessages(c echo.Context) error {
 	}
 
 	var messages []Message
-	err := DB.Select(&messages, "SELECT * FROM messages")
+	err := DB.Select(&messages, "SELECT * FROM message")
 	if err != nil {
 		log.Printf("Error fetching messages: %v", err)
 		return c.JSON(http.StatusServiceUnavailable, map[string]string{"error": "Error fetching messages"})
@@ -196,7 +196,7 @@ func SaveMessage(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request"})
 	}
 
-	query := "INSERT INTO messages (household_id, content, author_id, timestamp) VALUES (:household_id, :content, :author_id, :timestamp)"
+	query := "INSERT INTO message (household_id, content, author_id, timestamp) VALUES (:household_id, :content, :author_id, :timestamp)"
 	result, err := DB.NamedExec(query, newMessage)
 	if err != nil {
 		log.Printf("Error saving message: %v", err)
@@ -220,7 +220,7 @@ func FetchUsers(c echo.Context) error {
 	}
 
 	var users []AppUser
-	err := DB.Select(&users, "SELECT * FROM users")
+	err := DB.Select(&users, "SELECT * FROM appuser")
 	if err != nil {
 		log.Printf("Error fetching users: %v", err)
 		return c.JSON(http.StatusServiceUnavailable, map[string]string{"error": "Error fetching users"})
@@ -236,7 +236,7 @@ func SaveUser(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request"})
 	}
 
-	query := "INSERT INTO app_users (household_id, username, email) VALUES (:household_id, :username, :email)"
+	query := "INSERT INTO appuser (household_id, username, email) VALUES (:household_id, :username, :email)"
 	result, err := DB.NamedExec(query, newUser)
 	if err != nil {
 		log.Printf("Error saving user: %v", err)
