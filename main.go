@@ -1,4 +1,4 @@
-package Main
+package main
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ import (
 	"github.com/stripe/stripe-go"
 )
 
-func Main() {
+func main() {
 
 	err := godotenv.Load(".env")
 	if err != nil {
