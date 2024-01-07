@@ -118,7 +118,7 @@ func FetchTasks(c echo.Context) error {
 	}
 
 	for k, v := range tasks {
-		err := DB.Get(&v.AssignedTo, "SELECT name FROM appuser WHERE id = $1", v.AssignedTo)
+		err := DB.Get(&v.AssignedTo, "SELECT username FROM appuser WHERE id = $1", v.AssignedTo)
 		if err != nil {
 			log.Printf("Error fetching user: %v", err)
 			tasks[k].AssignedTo = "Unknown"
