@@ -76,13 +76,13 @@ func FetchPayments(c echo.Context) error {
 	}
 
 	for k, v := range payments {
-		err := DB.Get(&v.Payee, "SELECT name FROM appuser WHERE id = $1", v.Payee)
+		username := "Unknown"
+		err := DB.Get(&username, "SELECT username FROM appuser WHERE id = $1", v.Payee)
 		if err != nil {
 			log.Printf("Error fetching user: %v", err)
-			payments[k].Payee = "Unknown"
 		}
 
-		//payments[k].Payee = v.Name
+		payments[k].Payee = username
 
 	}
 
@@ -125,13 +125,13 @@ func FetchTasks(c echo.Context) error {
 	}
 
 	for k, v := range tasks {
-		err := DB.Get(&v.AssignedTo, "SELECT username FROM appuser WHERE id = $1", v.AssignedTo)
+		username := "Unknown"
+		err := DB.Get(&username, "SELECT username FROM appuser WHERE id = $1", v.AssignedTo)
 		if err != nil {
 			log.Printf("Error fetching user: %v", err)
-			tasks[k].AssignedTo = "Unknown"
 		}
 
-		//tasks[k].AssignedTo = v.Name
+		tasks[k].AssignedTo = username
 
 	}
 
