@@ -25,18 +25,18 @@ type Payment struct {
 }
 
 type Task struct {
-	ID           int64  `db:"id" json:"id"`
-	HouseHoldID  int64  `db:"household" json:"household"`
-	Name         string `db:"name" json:"name"`
-	Description  string `db:"description" json:"description"`
-	DueDate      string `db:"due_date" json:"due_date"`
-	AssignedToID int64  `db:"assigned_to_id" json:"assigned_to_id"`
-	Completed    bool   `db:"completed" json:"completed"`
+	ID          int64  `db:"id" json:"id"`
+	HouseHoldID int64  `db:"household" json:"household"`
+	Name        string `db:"name" json:"name"`
+	Description string `db:"description" json:"description"`
+	DueDate     string `db:"due_date" json:"due_date"`
+	AssignedTo  int64  `db:"assigned_to" json:"assigned_to"`
+	Completed   bool   `db:"completed" json:"completed"`
 }
 
 type List struct {
 	ID          int64  `db:"id" json:"id"`
-	HouseHoldID int64  `db:"household" json:"household"`
+	HouseHold   int64  `db:"household" json:"household"`
 	Name        string `db:"name" json:"name"`
 	Description string `db:"description" json:"description"`
 }
