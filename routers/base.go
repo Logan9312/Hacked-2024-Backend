@@ -28,6 +28,7 @@ func HealthCheck() {
 	e.GET("/tasks", src.FetchTasks)
 	e.GET("/lists", src.FetchLists)
 	e.GET("/messages", src.FetchMessages)
+	e.GET("/messages", src.FetchItems)
 
 	e.POST("/save/payment", src.SavePayment)
 	e.POST("/save/user", src.SaveUser)

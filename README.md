@@ -24,6 +24,7 @@ I built this backend to support the roomates App, it was made using the followin
 /tasks - GET - Fetches all tasks
 /lists - GET - Fetches all lists
 /messages - GET - Fetches all messages
+/items - GET - Fetches all items
 
 /save/payment - POST - Saves a payment
 /save/user - POST - Saves a user
