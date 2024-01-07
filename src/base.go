@@ -30,7 +30,7 @@ type Task struct {
 	Name        string `db:"name" json:"name"`
 	Description string `db:"description" json:"description"`
 	DueDate     string `db:"due_date" json:"due_date"`
-	AssignedTo  int64  `db:"assigned_to" json:"assigned_to"`
+	AssignedTo  string `db:"assigned_to" json:"assigned_to"`
 	Completed   bool   `db:"completed" json:"completed"`
 }
 
@@ -75,7 +75,7 @@ func FetchPayments(c echo.Context) error {
 			payments[k].Payee = "Unknown"
 		}
 
-		payments[k].Payee = v.Name
+		//payments[k].Payee = v.Name
 
 	}
 
@@ -115,6 +115,17 @@ func FetchTasks(c echo.Context) error {
 	if err != nil {
 		log.Printf("Error fetching task: %v", err)
 		return c.JSON(http.StatusServiceUnavailable, map[string]string{"error": "Error fetching tasks"})
+	}
+
+	for k, v := range tasks {
+		err := DB.Get(&v.AssignedTo, "SELECT name FROM appuser WHERE id = $1", v.AssignedTo)
+		if err != nil {
+			log.Printf("Error fetching user: %v", err)
+			tasks[k].AssignedTo = "Unknown"
+		}
+
+		//tasks[k].AssignedTo = v.Name
+
 	}
 
 	return c.JSON(http.StatusOK, tasks)
