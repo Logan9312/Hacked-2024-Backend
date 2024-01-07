@@ -42,11 +42,11 @@ type List struct {
 }
 
 type Message struct {
-	ID          int64  `db:"id" json:"id"`
-	HouseHoldID int64  `db:"household" json:"household"`
-	Content     string `db:"content" json:"content"`
-	AuthorID    int64  `db:"author_id" json:"author_id"`
-	Timestamp   string `db:"timestamp" json:"timestamp"`
+	ID        int64  `db:"id" json:"id"`
+	HouseHold int64  `db:"household" json:"household"`
+	Content   string `db:"content" json:"content"`
+	AuthorID  int64  `db:"author_id" json:"author_id"`
+	Timestamp string `db:"timestamp" json:"timestamp"`
 }
 
 type AppUser struct {
@@ -54,6 +54,13 @@ type AppUser struct {
 	HouseHold int64  `db:"household" json:"household"`
 	Username  string `db:"username" json:"username"`
 	Email     string `db:"email" json:"email"`
+}
+
+type Items struct {
+	ID        int64  `db:"id" json:"id"`
+	HouseHold int64  `db:"household" json:"household"`
+	ListID    int64  `db:"list_id" json:"list_id"`
+	Name      string `db:"name" json:"name"`
 }
 
 func FetchPayments(c echo.Context) error {
@@ -273,4 +280,20 @@ func SaveUser(c echo.Context) error {
 	newUser.ID = id
 
 	return c.JSON(http.StatusCreated, newUser)
+}
+
+// FetchUsers retrieves all users from the database.
+func FetchItems(c echo.Context) error {
+	if DB == nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Database connection is not established"})
+	}
+
+	var items []Items
+	err := DB.Select(&items, "SELECT * FROM items")
+	if err != nil {
+		log.Printf("Error fetching items: %v", err)
+		return c.JSON(http.StatusServiceUnavailable, map[string]string{"error": "Error fetching items"})
+	}
+
+	return c.JSON(http.StatusOK, items)
 }
