@@ -68,6 +68,16 @@ func FetchPayments(c echo.Context) error {
 		return c.JSON(http.StatusServiceUnavailable, map[string]string{"error": "Error fetching payments"})
 	}
 
+	for k, v := range payments {
+		selectQuery := "SELECT name FROM appuser WHERE id = $1"
+		err := DB.Get(&v.Payee, selectQuery, v.Payee)
+		if err != nil {
+			log.Printf("Error fetching user: %v", err)
+			payments[k].Payee = "Unknown"
+		}
+		payments[k] = v
+	}
+
 	return c.JSON(http.StatusOK, payments)
 }
 
