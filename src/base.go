@@ -111,7 +111,7 @@ func FetchTasks(c echo.Context) error {
 	}
 
 	var tasks []Task
-	err := DB.Select(&tasks, "SELECT * FROM tasks")
+	err := DB.Select(&tasks, "SELECT * FROM task")
 	if err != nil {
 		log.Printf("Error fetching task: %v", err)
 		return c.JSON(http.StatusServiceUnavailable, map[string]string{"error": "Error fetching tasks"})
